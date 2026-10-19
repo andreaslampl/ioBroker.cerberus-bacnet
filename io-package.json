@@ -1,8 +1,12 @@
 {
   "common": {
     "name": "cerberus-bacnet",
-    "version": "0.1.3",
+    "version": "0.1.4",
     "news": {
+      "0.1.4": {
+        "en": "Title now starts with FC20",
+        "de": "Titel beginnt jetzt mit FC20"
+      },
       "0.1.3": {
         "en": "Panel extended or reconfigured: new objects are read automatically (database revision); a slower poll no longer overwrites a newer change notification",
         "de": "Zentrale erweitert oder umkonfiguriert: neue Objekte werden automatisch eingelesen (Datenbank-Revision); eine langsamere Abfrage überschreibt keine neuere Änderungsmeldung mehr"
@@ -21,8 +25,8 @@
       }
     },
     "titleLang": {
-      "en": "Cerberus PRO fire panel (BACnet)",
-      "de": "Cerberus PRO Brandmeldezentrale (BACnet)"
+      "en": "FC20 Cerberus PRO fire panel (BACnet)",
+      "de": "FC20 Cerberus PRO Brandmeldezentrale (BACnet)"
     },
     "desc": {
       "en": "Siemens Cerberus PRO fire panels (FC20/FC720) over BACnet/IP: detectors, zones, alarms, faults, disablements; optional reset, silence, enable/disable and outputs.",

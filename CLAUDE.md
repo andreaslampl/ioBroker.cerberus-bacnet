@@ -43,6 +43,10 @@ ioBroker adapter for Siemens Cerberus PRO fire panels over BACnet/IP. Owner's pa
   likely cause: no BACnet license on the panel. The owner asked to trick the license check - declined;
   offered alternatives: obtain the license, or wire the panel's fire/fault outputs to SPC zones
   (ioBroker.spc-edp).
+- With the BACnet license installed it connects (0.1.3): 136 objects (point 18, zone 114 incl. hardware
+  like loops/stubs/panel, msv 3, bv 1, structured view 166, notification class 25, types 48/318).
+  Open: duplicate names ("Stich 21" on two line cards), info-log noise after connect, BBMD renewal log.
+- 0.1.4: admin title starts with "FC20" (adapter ID/repo name unchanged on purpose).
 
 ## Conventions
 
