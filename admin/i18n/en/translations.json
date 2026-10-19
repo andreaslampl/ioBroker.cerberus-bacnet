@@ -1,0 +1,16 @@
+{
+  "IP address of the panel": "IP address of the panel",
+  "e.g. 192.168.1.50, optional with :port (default 47808)": "e.g. 192.168.1.50, optional with :port (default 47808)",
+  "BACnet device ID of the panel": "BACnet device ID of the panel",
+  "BACnet client device ID (as configured in the panel)": "BACnet client device ID (as configured in the panel)",
+  "Local UDP port": "Local UDP port",
+  "Local IP to use (optional)": "Local IP to use (optional)",
+  "Only needed if the ioBroker server has several network cards": "Only needed if the ioBroker server has several network cards",
+  "Poll interval (s)": "Poll interval (s)",
+  "Changes usually arrive at once via COV; polling is the safety net and keeps the panel's client supervision happy": "Changes usually arrive at once via COV; polling is the safety net and keeps the panel's client supervision happy",
+  "Timeout (s)": "Timeout (s)",
+  "Commands": "Commands",
+  "Commands change the state of a fire alarm system (reset, silence, disable detectors, switch outputs). Only enable this if you are allowed to operate the system and know the consequences.": "Commands change the state of a fire alarm system (reset, silence, disable detectors, switch outputs). Only enable this if you are allowed to operate the system and know the consequences.",
+  "Allow commands": "Allow commands",
+  "BACnet priority for outputs": "BACnet priority for outputs"
+}

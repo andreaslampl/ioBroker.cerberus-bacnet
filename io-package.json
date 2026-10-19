@@ -1,0 +1,325 @@
+{
+  "common": {
+    "name": "cerberus-bacnet",
+    "version": "0.1.0",
+    "news": {
+      "0.1.0": {
+        "en": "Initial release: Cerberus PRO fire panel over BACnet/IP (read, optional commands)",
+        "de": "Erste Version: Cerberus-PRO-Brandmeldezentrale über BACnet/IP (lesen, optional schalten)"
+      }
+    },
+    "titleLang": {
+      "en": "Cerberus PRO fire panel (BACnet)",
+      "de": "Cerberus PRO Brandmeldezentrale (BACnet)"
+    },
+    "desc": {
+      "en": "Siemens Cerberus PRO fire panels (FC20/FC720) over BACnet/IP: detectors, zones, alarms, faults, disablements; optional reset, silence, enable/disable and outputs.",
+      "de": "Siemens Cerberus PRO Brandmeldezentralen (FC20/FC720) über BACnet/IP: Melder, Zonen, Alarme, Störungen, Abschaltungen; optional Rücksetzen, Akustik ab, Ab-/Einschalten und Ausgänge."
+    },
+    "authors": [
+      "andreaslampl"
+    ],
+    "license": "MIT",
+    "platform": "Javascript/Node.js",
+    "mode": "daemon",
+    "icon": "cerberus-bacnet.png",
+    "extIcon": "https://raw.githubusercontent.com/andreaslampl/ioBroker.cerberus-bacnet/main/admin/cerberus-bacnet.png",
+    "readme": "https://github.com/andreaslampl/ioBroker.cerberus-bacnet/blob/main/README.md",
+    "enabled": true,
+    "type": "alarm",
+    "compact": true,
+    "connectionType": "local",
+    "dataSource": "push",
+    "adminUI": {
+      "config": "json"
+    },
+    "tier": 2,
+    "dependencies": [
+      {
+        "js-controller": ">=5.0.19"
+      }
+    ],
+    "globalDependencies": [
+      {
+        "admin": ">=6.0.0"
+      }
+    ]
+  },
+  "native": {
+    "host": "",
+    "deviceId": 1,
+    "clientId": 10,
+    "localPort": 47808,
+    "bind": "",
+    "pollInterval": 30,
+    "timeout": 6,
+    "allowControl": false,
+    "priority": 8
+  },
+  "objects": [],
+  "instanceObjects": [
+    {
+      "_id": "info",
+      "type": "channel",
+      "common": {
+        "name": {
+          "en": "Information",
+          "de": "Information"
+        }
+      },
+      "native": {}
+    },
+    {
+      "_id": "info.connection",
+      "type": "state",
+      "common": {
+        "name": {
+          "en": "Panel connected",
+          "de": "Zentrale verbunden"
+        },
+        "type": "boolean",
+        "role": "indicator.connected",
+        "read": true,
+        "write": false,
+        "def": false
+      },
+      "native": {}
+    },
+    {
+      "_id": "info.panel",
+      "type": "state",
+      "common": {
+        "name": {
+          "en": "Panel",
+          "de": "Zentrale"
+        },
+        "type": "string",
+        "role": "text",
+        "read": true,
+        "write": false
+      },
+      "native": {}
+    },
+    {
+      "_id": "info.objectTypes",
+      "type": "state",
+      "common": {
+        "name": {
+          "en": "BACnet object types (count per type)",
+          "de": "BACnet-Objekttypen (Anzahl je Typ)"
+        },
+        "type": "string",
+        "role": "json",
+        "read": true,
+        "write": false
+      },
+      "native": {}
+    },
+    {
+      "_id": "summary",
+      "type": "channel",
+      "common": {
+        "name": {
+          "en": "Summary",
+          "de": "Sammelmeldungen"
+        }
+      },
+      "native": {}
+    },
+    {
+      "_id": "summary.alarm",
+      "type": "state",
+      "common": {
+        "name": {
+          "en": "Fire alarm",
+          "de": "Brandalarm"
+        },
+        "type": "boolean",
+        "role": "indicator.alarm.fire",
+        "read": true,
+        "write": false,
+        "def": false
+      },
+      "native": {}
+    },
+    {
+      "_id": "summary.alarmList",
+      "type": "state",
+      "common": {
+        "name": {
+          "en": "Alarms",
+          "de": "Alarme"
+        },
+        "type": "string",
+        "role": "text",
+        "read": true,
+        "write": false
+      },
+      "native": {}
+    },
+    {
+      "_id": "summary.preAlarm",
+      "type": "state",
+      "common": {
+        "name": {
+          "en": "Pre-alarm",
+          "de": "Voralarm"
+        },
+        "type": "boolean",
+        "role": "indicator.alarm",
+        "read": true,
+        "write": false,
+        "def": false
+      },
+      "native": {}
+    },
+    {
+      "_id": "summary.fault",
+      "type": "state",
+      "common": {
+        "name": {
+          "en": "Fault",
+          "de": "Störung"
+        },
+        "type": "boolean",
+        "role": "indicator.maintenance",
+        "read": true,
+        "write": false,
+        "def": false
+      },
+      "native": {}
+    },
+    {
+      "_id": "summary.faultList",
+      "type": "state",
+      "common": {
+        "name": {
+          "en": "Faults",
+          "de": "Störungen"
+        },
+        "type": "string",
+        "role": "text",
+        "read": true,
+        "write": false
+      },
+      "native": {}
+    },
+    {
+      "_id": "summary.disabled",
+      "type": "state",
+      "common": {
+        "name": {
+          "en": "Disablement active",
+          "de": "Abschaltung aktiv"
+        },
+        "type": "boolean",
+        "role": "indicator",
+        "read": true,
+        "write": false,
+        "def": false
+      },
+      "native": {}
+    },
+    {
+      "_id": "summary.disabledList",
+      "type": "state",
+      "common": {
+        "name": {
+          "en": "Disabled",
+          "de": "Abgeschaltet"
+        },
+        "type": "string",
+        "role": "text",
+        "read": true,
+        "write": false
+      },
+      "native": {}
+    },
+    {
+      "_id": "summary.lastChange",
+      "type": "state",
+      "common": {
+        "name": {
+          "en": "Last change",
+          "de": "Letzte Änderung"
+        },
+        "type": "string",
+        "role": "text",
+        "read": true,
+        "write": false
+      },
+      "native": {}
+    },
+    {
+      "_id": "summary.lastMessage",
+      "type": "state",
+      "common": {
+        "name": {
+          "en": "Last event message from the panel",
+          "de": "Letzte Ereignismeldung der Zentrale"
+        },
+        "type": "string",
+        "role": "text",
+        "read": true,
+        "write": false
+      },
+      "native": {}
+    },
+    {
+      "_id": "panel",
+      "type": "channel",
+      "common": {
+        "name": {
+          "en": "Panel commands",
+          "de": "Befehle an die Zentrale"
+        }
+      },
+      "native": {}
+    },
+    {
+      "_id": "panel.reset",
+      "type": "state",
+      "common": {
+        "name": {
+          "en": "Reset panel",
+          "de": "Zentrale rücksetzen"
+        },
+        "type": "boolean",
+        "role": "button",
+        "read": false,
+        "write": true
+      },
+      "native": {}
+    },
+    {
+      "_id": "panel.silence",
+      "type": "state",
+      "common": {
+        "name": {
+          "en": "Silence (buzzer/sounders)",
+          "de": "Akustik ab (Summer/Sirenen)"
+        },
+        "type": "boolean",
+        "role": "button",
+        "read": false,
+        "write": true
+      },
+      "native": {}
+    },
+    {
+      "_id": "panel.unsilence",
+      "type": "state",
+      "common": {
+        "name": {
+          "en": "Sounders on again",
+          "de": "Akustik wieder ein"
+        },
+        "type": "boolean",
+        "role": "button",
+        "read": false,
+        "write": true
+      },
+      "native": {}
+    }
+  ]
+}

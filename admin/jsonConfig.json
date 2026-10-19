@@ -1,0 +1,94 @@
+{
+  "i18n": true,
+  "type": "panel",
+  "items": {
+    "host": {
+      "type": "text",
+      "label": "IP address of the panel",
+      "help": "e.g. 192.168.1.50, optional with :port (default 47808)",
+      "xs": 12,
+      "sm": 6
+    },
+    "deviceId": {
+      "type": "number",
+      "label": "BACnet device ID of the panel",
+      "default": 1,
+      "min": 0,
+      "max": 4194302,
+      "xs": 12,
+      "sm": 3
+    },
+    "clientId": {
+      "type": "number",
+      "label": "BACnet client device ID (as configured in the panel)",
+      "default": 10,
+      "min": 0,
+      "max": 4194302,
+      "xs": 12,
+      "sm": 3,
+      "newLine": true
+    },
+    "localPort": {
+      "type": "port",
+      "label": "Local UDP port",
+      "default": 47808,
+      "xs": 12,
+      "sm": 3
+    },
+    "bind": {
+      "type": "text",
+      "label": "Local IP to use (optional)",
+      "help": "Only needed if the ioBroker server has several network cards",
+      "xs": 12,
+      "sm": 3
+    },
+    "pollInterval": {
+      "type": "number",
+      "label": "Poll interval (s)",
+      "default": 30,
+      "min": 5,
+      "max": 300,
+      "newLine": true,
+      "xs": 12,
+      "sm": 3,
+      "help": "Changes usually arrive at once via COV; polling is the safety net and keeps the panel's client supervision happy"
+    },
+    "timeout": {
+      "type": "number",
+      "label": "Timeout (s)",
+      "default": 6,
+      "min": 2,
+      "max": 30,
+      "xs": 12,
+      "sm": 3
+    },
+    "ctrlHeader": {
+      "type": "header",
+      "text": "Commands",
+      "size": 4,
+      "newLine": true
+    },
+    "ctrlWarn": {
+      "type": "staticText",
+      "text": "Commands change the state of a fire alarm system (reset, silence, disable detectors, switch outputs). Only enable this if you are allowed to operate the system and know the consequences.",
+      "xs": 12
+    },
+    "allowControl": {
+      "type": "checkbox",
+      "label": "Allow commands",
+      "default": false,
+      "xs": 12,
+      "sm": 4
+    },
+    "priority": {
+      "type": "number",
+      "label": "BACnet priority for outputs",
+      "default": 8,
+      "min": 1,
+      "max": 16,
+      "xs": 12,
+      "sm": 3,
+      "hidden": "!data.allowControl"
+    }
+  }
+}
