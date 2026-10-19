@@ -1,8 +1,12 @@
 {
   "common": {
     "name": "cerberus-bacnet",
-    "version": "0.1.1",
+    "version": "0.1.2",
     "news": {
+      "0.1.2": {
+        "en": "Diagnosis in the log when the panel refuses; optional registration as foreign device (BBMD) for panels in another subnet/VLAN",
+        "de": "Diagnose im Log, wenn die Zentrale ablehnt; optional Anmeldung als Foreign Device (BBMD) für Zentralen in einem anderen Subnetz/VLAN"
+      },
       "0.1.1": {
         "en": "Announces itself to the panel (I-Am, also across VLANs) so the panel accepts it as its BACnet client; clearer error messages",
         "de": "Meldet sich direkt bei der Zentrale an (I-Am, auch über VLAN-Grenzen), damit sie den Adapter als BACnet-Klient akzeptiert; verständlichere Fehlermeldungen"
@@ -58,7 +62,8 @@
     "pollInterval": 30,
     "timeout": 6,
     "allowControl": false,
-    "priority": 8
+    "priority": 8,
+    "foreignDevice": false
   },
   "objects": [],
   "instanceObjects": [

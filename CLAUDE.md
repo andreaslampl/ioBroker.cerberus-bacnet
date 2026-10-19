@@ -34,6 +34,8 @@ ioBroker adapter for Siemens Cerberus PRO fire panels over BACnet/IP. Owner's pa
   address from I-Am (Who-Is broadcasts don't cross the owner's VLANs) -> 0.1.1 sends I-Am unicast
   to the panel before connecting. Other candidates if it persists: client ID mismatch, BACnet
   license (site export shows installedLicense NOT_PRESENT on the panel element), access rights.
+- 0.1.1 still denied (Code:29). 0.1.2 adds diagnosis (panel's I-Am; whether the panel ever contacts us)
+  and optional foreign device registration at the panel as BBMD (needs 'BBMD freigeben' in the panel).
 
 ## Conventions
 

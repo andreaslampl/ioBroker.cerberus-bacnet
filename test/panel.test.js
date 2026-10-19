@@ -149,3 +149,20 @@ test('panel denies a client that did not announce itself; readable hint in the l
     assert.match(warnings.join('\n'), /refuses the request.*client ID/);
     assert.match(describe(new Error('ERR_TIMEOUT')), /no answer/);
 });
+
+test('diagnosis when denied: Who-Is answer of the panel is logged', async t => {
+    const port = nextPort;
+    nextPort += 2;
+    const fake = fakePanel({ port });
+    const link = new BacnetLink({ deviceId: 11, port: port + 1, bind: '127.0.0.1', timeout: 1500, log: quiet });
+    const infos = [];
+    const panel = new Panel({ link, address: `127.0.0.1:${port}`, deviceId: 1, log: { ...quiet, info: m => infos.push(m) }, pollInterval: 100000 });
+    t.after(() => {
+        panel.stop();
+        link.close();
+        fake.close();
+    });
+    await panel.start();
+    assert.match(infos.join('\n'), /panel answers Who-Is as device 1/);
+    assert.match(infos.join('\n'), /has not contacted us/);
+});

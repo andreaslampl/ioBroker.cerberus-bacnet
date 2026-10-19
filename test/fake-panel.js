@@ -62,6 +62,7 @@ function fakePanel({ port, deviceId = 1, clientId = 10, noRpm = false, shortList
     };
     const err = (c, cls, code) => dev.errorResponse(c.header.sender, c.service, c.invokeId, cls, code);
     const known = new Set();
+    dev.on('whoIs', c => dev.iAmResponse(c.header.sender, deviceId, Bacnet.Segmentation.NO_SEGMENTATION, 7));
     dev.on('iAm', c => {
         if (c.payload.deviceId === clientId) {
             known.add(c.header.sender.address);

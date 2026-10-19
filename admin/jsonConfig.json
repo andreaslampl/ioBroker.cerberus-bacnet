@@ -62,6 +62,15 @@
       "xs": 12,
       "sm": 3
     },
+    "foreignDevice": {
+      "type": "checkbox",
+      "label": "Register as foreign device at the panel (BBMD)",
+      "help": "Needed when ioBroker and the panel are in different subnets/VLANs; requires 'BBMD freigeben' in the panel",
+      "default": false,
+      "newLine": true,
+      "xs": 12,
+      "sm": 6
+    },
     "ctrlHeader": {
       "type": "header",
       "text": "Commands",

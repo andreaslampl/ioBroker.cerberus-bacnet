@@ -44,6 +44,7 @@ class CerberusBacnet extends utils.Adapter {
             deviceId: Number(this.config.deviceId) || 1,
             log: this.log,
             pollInterval: (Number(this.config.pollInterval) || 30) * 1000,
+            foreignDevice: Boolean(this.config.foreignDevice),
         });
         // One after another: overlapping updates could otherwise write an older summary last.
         this.panel.on('online', on => this._queue(() => this.onOnline(on)));

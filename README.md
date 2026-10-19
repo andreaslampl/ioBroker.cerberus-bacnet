@@ -36,6 +36,10 @@ Benötigt Node.js 20 oder neuer.
 | Abfrage alle | Standard 30 s |
 | Befehle erlauben | **aus** = nur lesen; an = Rücksetzen, Akustik ab, Ab-/Einschalten, Ausgänge |
 
+**Verschiedene Subnetze/VLANs:** Die Zentrale sucht ihren BACnet-Klienten per Broadcast; der
+kommt nicht über Subnetz-Grenzen. Dann in der Zentrale *BACnet-Geräteobjekt → BBMD freigeben = Ja*
+setzen und im Adapter **„Als Foreign Device bei der Zentrale anmelden (BBMD)“** einschalten.
+
 **Firewall / VLAN:** zwischen ioBroker-Server und Zentrale **UDP 47808 in beide Richtungen**
 freigeben (die Zentrale schickt Änderungen von sich aus). BACnet-Broadcasts gehen nicht über
 VLAN-Grenzen, deshalb wird die IP der Zentrale fest eingetragen.

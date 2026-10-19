@@ -12,5 +12,7 @@
   "Commands": "Commands",
   "Commands change the state of a fire alarm system (reset, silence, disable detectors, switch outputs). Only enable this if you are allowed to operate the system and know the consequences.": "Commands change the state of a fire alarm system (reset, silence, disable detectors, switch outputs). Only enable this if you are allowed to operate the system and know the consequences.",
   "Allow commands": "Allow commands",
-  "BACnet priority for outputs": "BACnet priority for outputs"
+  "BACnet priority for outputs": "BACnet priority for outputs",
+  "Register as foreign device at the panel (BBMD)": "Register as foreign device at the panel (BBMD)",
+  "Needed when ioBroker and the panel are in different subnets/VLANs; requires 'BBMD freigeben' in the panel": "Needed when ioBroker and the panel are in different subnets/VLANs; requires 'BBMD freigeben' in the panel"
 }
