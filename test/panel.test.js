@@ -128,3 +128,24 @@ test('panel offline: no crash, comes online later', async t => {
     await until(() => panel.online, 8000);
     assert.deepEqual(online, [true]);
 });
+
+test('panel denies a client that did not announce itself; readable hint in the log', async t => {
+    const { describe } = require('../lib/panel');
+    const port = nextPort;
+    nextPort += 2;
+    const fake = fakePanel({ port });
+    const link = new BacnetLink({ deviceId: 11, port: port + 1, bind: '127.0.0.1', timeout: 1500, log: quiet }); // wrong client ID
+    const warnings = [];
+    const panel = new Panel({ link, address: `127.0.0.1:${port}`, deviceId: 1, log: { ...quiet, warn: m => warnings.push(m) }, pollInterval: 100000 });
+    t.after(() => {
+        panel.stop();
+        link.close();
+        fake.close();
+    });
+    await panel.start();
+    assert.equal(panel.online, false);
+    assert.ok(fake.calls.includes('DENIED'));
+    assert.equal(panel.rpm, true); // denied is not "RPM unsupported"
+    assert.match(warnings.join('\n'), /refuses the request.*client ID/);
+    assert.match(describe(new Error('ERR_TIMEOUT')), /no answer/);
+});

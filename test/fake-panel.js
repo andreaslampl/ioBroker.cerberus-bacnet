@@ -2,7 +2,9 @@
 
 /*
  * A simulated Cerberus PRO panel on 127.0.0.1 (BACnet device, using the same library).
- * Options: noRpm (rejects ReadPropertyMultiple), shortList (object list only by index).
+ * Options: noRpm (rejects ReadPropertyMultiple), shortList (object list only by index),
+ * requireIAm (like the real panel: requests from an address that has not announced itself as the
+ * configured client device are denied with service-request-denied).
  */
 
 const { Bacnet } = require('../lib/link');
@@ -12,7 +14,7 @@ const P = Bacnet.PropertyIdentifier;
 const OT = Bacnet.ObjectType;
 const T = Bacnet.ApplicationTag;
 
-function fakePanel({ port, deviceId = 1, clientId = 10, noRpm = false, shortList = false } = {}) {
+function fakePanel({ port, deviceId = 1, clientId = 10, noRpm = false, shortList = false, requireIAm = true } = {}) {
     const dev = new B({ port, interface: '127.0.0.1', apduTimeout: 2000 });
     const objects = new Map();
     const add = (type, instance, props) => objects.set(`${type}:${instance}`, { objectId: { type, instance }, ...props });
@@ -59,8 +61,26 @@ function fakePanel({ port, deviceId = 1, clientId = 10, noRpm = false, shortList
         }
     };
     const err = (c, cls, code) => dev.errorResponse(c.header.sender, c.service, c.invokeId, cls, code);
+    const known = new Set();
+    dev.on('iAm', c => {
+        if (c.payload.deviceId === clientId) {
+            known.add(c.header.sender.address);
+        }
+    });
+    /** true if the request was denied */
+    const deny = c => {
+        if (requireIAm && !known.has(c.header.sender.address)) {
+            calls.push('DENIED');
+            err(c, Bacnet.ErrorClass.SERVICES, Bacnet.ErrorCode.SERVICE_REQUEST_DENIED);
+            return true;
+        }
+        return false;
+    };
 
     dev.on('readProperty', c => {
+        if (deny(c)) {
+            return;
+        }
         const { objectId, property } = c.payload;
         calls.push(`RP ${objectId.type}:${objectId.instance}.${property.id}`);
         const o = objects.get(`${objectId.type}:${objectId.instance}`);
@@ -84,9 +104,12 @@ function fakePanel({ port, deviceId = 1, clientId = 10, noRpm = false, shortList
     });
 
     dev.on('readPropertyMultiple', c => {
+        if (deny(c)) {
+            return;
+        }
         calls.push('RPM');
         if (noRpm) {
-            return err(c, Bacnet.ErrorClass.SERVICES, Bacnet.ErrorCode.SERVICE_REQUEST_DENIED);
+            return err(c, Bacnet.ErrorClass.SERVICES, Bacnet.ErrorCode.REJECT_UNRECOGNIZED_SERVICE);
         }
         const out = c.payload.properties.map(spec => {
             const o = objects.get(`${spec.objectId.type}:${spec.objectId.instance}`);
@@ -114,6 +137,9 @@ function fakePanel({ port, deviceId = 1, clientId = 10, noRpm = false, shortList
     };
 
     dev.on('subscribeCov', c => {
+        if (deny(c)) {
+            return;
+        }
         const id = c.payload.monitoredObjectId;
         calls.push(`SUB ${id.type}:${id.instance}`);
         subscribers.set(`${id.type}:${id.instance}`, { address: c.header.sender.address, processId: c.payload.subscriberProcessId });
@@ -121,6 +147,9 @@ function fakePanel({ port, deviceId = 1, clientId = 10, noRpm = false, shortList
     });
 
     dev.on('writeProperty', c => {
+        if (deny(c)) {
+            return;
+        }
         const { objectId, value: v } = c.payload;
         const key = `${objectId.type}:${objectId.instance}`;
         const o = objects.get(key);
@@ -137,6 +166,9 @@ function fakePanel({ port, deviceId = 1, clientId = 10, noRpm = false, shortList
     });
 
     dev.on('lifeSafetyOperation', c => {
+        if (deny(c)) {
+            return;
+        }
         const { operation, targetObjectId: t } = c.payload;
         calls.push(`LSO ${operation} ${t.type}:${t.instance} from ${c.payload.requestingSource}/${c.payload.processId}`);
         if (operation === 4) {

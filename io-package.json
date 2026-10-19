@@ -1,8 +1,12 @@
 {
   "common": {
     "name": "cerberus-bacnet",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "news": {
+      "0.1.1": {
+        "en": "Announces itself to the panel (I-Am, also across VLANs) so the panel accepts it as its BACnet client; clearer error messages",
+        "de": "Meldet sich direkt bei der Zentrale an (I-Am, auch über VLAN-Grenzen), damit sie den Adapter als BACnet-Klient akzeptiert; verständlichere Fehlermeldungen"
+      },
       "0.1.0": {
         "en": "Initial release: Cerberus PRO fire panel over BACnet/IP (read, optional commands)",
         "de": "Erste Version: Cerberus-PRO-Brandmeldezentrale über BACnet/IP (lesen, optional schalten)"

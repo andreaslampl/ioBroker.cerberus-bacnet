@@ -27,6 +27,14 @@ ioBroker adapter for Siemens Cerberus PRO fire panels over BACnet/IP. Owner's pa
   panel, and whether the panel sends COV/events to us are still to be confirmed in the field
   (`info.objectTypes` and the log line "Panel ... objects (...)" help).
 
+## Field log
+
+- 0.1.0 on the real panel: every request answered with Class:5 Code:29 (service-request-denied),
+  so network/port are fine. Assumed cause: the panel only accepts the client after learning its
+  address from I-Am (Who-Is broadcasts don't cross the owner's VLANs) -> 0.1.1 sends I-Am unicast
+  to the panel before connecting. Other candidates if it persists: client ID mismatch, BACnet
+  license (site export shows installedLicense NOT_PRESENT on the panel element), access rights.
+
 ## Conventions
 
 - UI texts and README in German, code and comments in English.
