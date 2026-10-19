@@ -111,9 +111,9 @@ class CerberusBacnet extends utils.Adapter {
 
     async onObjects(list) {
         await this.extendObject('objects', { type: 'folder', common: { name: { en: 'Panel objects', de: 'Objekte der Zentrale' } }, native: {} });
+        this.known = new Set(list.map(o => o.key));
         for (const o of list) {
             await this.createObjectStates(o);
-            this.known.add(o.key);
         }
         // objects that no longer exist in the panel
         const channels = await this.getChannelsOfAsync('objects').catch(() => []);

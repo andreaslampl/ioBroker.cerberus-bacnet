@@ -18,7 +18,7 @@ function fakePanel({ port, deviceId = 1, clientId = 10, noRpm = false, shortList
     const dev = new B({ port, interface: '127.0.0.1', apduTimeout: 2000 });
     const objects = new Map();
     const add = (type, instance, props) => objects.set(`${type}:${instance}`, { objectId: { type, instance }, ...props });
-    add(OT.DEVICE, deviceId, { name: 'FC2040', model: 'FC2040', firmware: '80.6.56' });
+    add(OT.DEVICE, deviceId, { name: 'FC2040', model: 'FC2040', firmware: '80.6.56', dbRev: 1 });
     add(OT.LIFE_SAFETY_ZONE, 1, { name: 'Z1', description: 'Gebäude', pv: 0, mode: 1, accepted: [1, 0], flags: 0 });
     add(OT.LIFE_SAFETY_POINT, 1, { name: 'P1', description: 'Melder Wohnraum', pv: 0, mode: 1, accepted: [1, 0], flags: 0 });
     add(OT.LIFE_SAFETY_POINT, 2, { name: 'P2', description: 'Melder Flur', pv: 0, mode: 1, accepted: [1, 0], flags: 0 });
@@ -54,6 +54,8 @@ function fakePanel({ port, deviceId = 1, clientId = 10, noRpm = false, shortList
                 return o.active ? [{ type: T.CHARACTER_STRING, value: o.active }] : null;
             case P.INACTIVE_TEXT:
                 return o.inactive ? [{ type: T.CHARACTER_STRING, value: o.inactive }] : null;
+            case P.DATABASE_REVISION:
+                return o.dbRev === undefined ? null : [{ type: T.UNSIGNED_INTEGER, value: o.dbRev }];
             case P.OBJECT_LIST:
                 return [...objects.values()].map(x => ({ type: T.OBJECTIDENTIFIER, value: x.objectId }));
             default:
@@ -193,6 +195,11 @@ function fakePanel({ port, deviceId = 1, clientId = 10, noRpm = false, shortList
             const k = `${type}:${instance}`;
             Object.assign(objects.get(k), changes);
             notify(k);
+        },
+        /** Extend the configuration like a download from the engineering tool would. */
+        extend(type, instance, props) {
+            add(type, instance, props);
+            objects.get(`${OT.DEVICE}:${deviceId}`).dbRev++;
         },
         close: () => dev.close(),
     };

@@ -1,8 +1,12 @@
 {
   "common": {
     "name": "cerberus-bacnet",
-    "version": "0.1.2",
+    "version": "0.1.3",
     "news": {
+      "0.1.3": {
+        "en": "Panel extended or reconfigured: new objects are read automatically (database revision); a slower poll no longer overwrites a newer change notification",
+        "de": "Zentrale erweitert oder umkonfiguriert: neue Objekte werden automatisch eingelesen (Datenbank-Revision); eine langsamere Abfrage überschreibt keine neuere Änderungsmeldung mehr"
+      },
       "0.1.2": {
         "en": "Diagnosis in the log when the panel refuses; optional registration as foreign device (BBMD) for panels in another subnet/VLAN",
         "de": "Diagnose im Log, wenn die Zentrale ablehnt; optional Anmeldung als Foreign Device (BBMD) für Zentralen in einem anderen Subnetz/VLAN"

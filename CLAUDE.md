@@ -14,7 +14,9 @@ ioBroker adapter for Siemens Cerberus PRO fire panels over BACnet/IP. Owner's pa
   its internal npdu/apdu/services modules).
 - `lib/panel.js` – `Panel`: object list (full read, else by array index), properties via RPM in
   batches of 4 (fallback single reads when the panel rejects RPM with Class:5), COV subscriptions
-  (renewed before lifetime ends), polling as safety net/keep-alive, commands: MODE write,
+  (renewed before lifetime ends), polling as safety net/keep-alive (device DATABASE_REVISION each
+  poll -> full re-read on change; without it the object-list length every 20th poll; poll/refresh
+  results are dropped for objects that got a COV meanwhile), commands: MODE write,
   LifeSafetyOperation (device = whole panel), PRESENT_VALUE write with priority (null = relinquish).
 - `lib/texts.js` – German texts for life safety state/mode, which states count as alarm/fault/off.
 - `test/` – `node --test` against `test/fake-panel.js` (library as device on 127.0.0.1).

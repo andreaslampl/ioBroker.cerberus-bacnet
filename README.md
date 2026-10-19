@@ -76,6 +76,10 @@ Typen: `point` (Melder/Punkt), `zone` (Zone/Bereich), `bi`/`bo`/`bv` (binär), `
 `panel.reset` (Rücksetzen), `panel.silence` (Akustik ab), `panel.unsilence` (Akustik wieder ein) –
 nur mit „Befehle erlauben“.
 
+**Erweiterungen:** Wird die Zentrale erweitert oder neu konfiguriert (Download aus dem
+Engineering-Tool), bemerkt der Adapter das an der Datenbank-Revision der Zentrale und liest alle
+Objekte neu ein; neue Melder erscheinen ohne Neustart, entfernte werden gelöscht.
+
 `info.objectTypes` zeigt, welche BACnet-Objekttypen die Zentrale wie oft meldet (hilfreich bei
 der Fehlersuche).
 

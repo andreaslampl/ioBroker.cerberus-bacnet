@@ -127,3 +127,14 @@ test('adapter (commands allowed): disable a detector, reset, switch an output', 
     assert.deepEqual(s['objects.point_1.mode'], { val: 0, ack: true });
     assert.match(adapter.warnings.join('\n'), /not accepted/);
 });
+
+test('adapter: panel extended -> new objects appear without restart', async t => {
+    const { adapter, fake, s } = await start(t, false);
+    assert.equal(adapter.objects['objects.point_3'], undefined);
+    fake.extend(OT.LIFE_SAFETY_POINT, 3, { name: 'P3', description: 'Melder Keller', pv: 0, mode: 1, accepted: [1, 0], flags: 0 });
+    await adapter.panel.poll();
+    await until(() => s['objects.point_3.name'] && s['objects.point_3.name'].val === 'Melder Keller');
+    assert.equal(adapter.objects['objects.point_3'].common.name, 'Melder Keller');
+    fake.set(OT.LIFE_SAFETY_POINT, 3, { pv: 2 });
+    await until(() => s['summary.alarmList'].val === 'Melder Keller');
+});
