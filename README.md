@@ -1,4 +1,6 @@
-# ioBroker.cerberus-bacnet
+# ioBroker.fc20-cerberus-bacnet
+
+Adapter `cerberus-bacnet` (Instanz `cerberus-bacnet.0`).
 
 Siemens **Cerberus PRO** Brandmeldezentralen (FC20xx, FC72x) über **BACnet/IP** in ioBroker:
 Melder, Zonen, Ein- und Ausgänge mit Zustand, Alarm, Störung und Abschaltung, dazu
@@ -20,7 +22,7 @@ Lebenszeichen für die Klienten-Überwachung der Zentrale).
 ## Installation
 
 ```
-iob url https://github.com/andreaslampl/ioBroker.cerberus-bacnet
+iob url https://github.com/andreaslampl/ioBroker.fc20-cerberus-bacnet
 ```
 
 Benötigt Node.js 20 oder neuer.

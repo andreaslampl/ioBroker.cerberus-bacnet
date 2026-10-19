@@ -1,4 +1,4 @@
-# ioBroker.cerberus-bacnet
+# ioBroker.fc20-cerberus-bacnet
 
 ioBroker adapter for Siemens Cerberus PRO fire panels over BACnet/IP. Owner's panel: FC2040
 (FW 80.x), device instance 1; BACnet client configured in the panel with device ID 10 and
@@ -46,12 +46,14 @@ ioBroker adapter for Siemens Cerberus PRO fire panels over BACnet/IP. Owner's pa
 - With the BACnet license installed it connects (0.1.3): 136 objects (point 18, zone 114 incl. hardware
   like loops/stubs/panel, msv 3, bv 1, structured view 166, notification class 25, types 48/318).
   Open: duplicate names ("Stich 21" on two line cards), info-log noise after connect, BBMD renewal log.
-- 0.1.4: admin title starts with "FC20" (adapter ID/repo name unchanged on purpose).
+- 0.1.4: admin title starts with "FC20". The owner then renamed the GitHub repo to
+  ioBroker.fc20-cerberus-bacnet; the adapter ID stays `cerberus-bacnet` (package name
+  iobroker.cerberus-bacnet) so existing instances, states and settings keep working.
 
 ## Conventions
 
 - UI texts and README in German, code and comments in English.
 - Bump `version` in both `package.json` and `io-package.json` and add a `news` entry.
-- Install on the ioBroker host: `iobroker url https://github.com/andreaslampl/ioBroker.cerberus-bacnet`.
+- Install on the ioBroker host: `iobroker url https://github.com/andreaslampl/ioBroker.fc20-cerberus-bacnet`.
 - Run `npm test` before committing.
 - Don't put the owner's IP addresses or data from the site export in the repository.

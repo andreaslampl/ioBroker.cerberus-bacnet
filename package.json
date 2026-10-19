@@ -4,13 +4,13 @@
   "description": "Siemens Cerberus PRO fire panels (FC20/FC720) over BACnet/IP for ioBroker",
   "author": "andreaslampl",
   "license": "MIT",
-  "homepage": "https://github.com/andreaslampl/ioBroker.cerberus-bacnet",
+  "homepage": "https://github.com/andreaslampl/ioBroker.fc20-cerberus-bacnet",
   "repository": {
     "type": "git",
-    "url": "https://github.com/andreaslampl/ioBroker.cerberus-bacnet.git"
+    "url": "https://github.com/andreaslampl/ioBroker.fc20-cerberus-bacnet.git"
   },
   "bugs": {
-    "url": "https://github.com/andreaslampl/ioBroker.cerberus-bacnet/issues"
+    "url": "https://github.com/andreaslampl/ioBroker.fc20-cerberus-bacnet/issues"
   },
   "keywords": [
     "ioBroker",
