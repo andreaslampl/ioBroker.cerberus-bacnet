@@ -1,8 +1,12 @@
 {
   "common": {
-    "name": "cerberus-bacnet",
-    "version": "0.1.4",
+    "name": "fc20-cerberus-bacnet",
+    "version": "0.2.0",
     "news": {
+      "0.2.0": {
+        "en": "Adapter renamed to fc20-cerberus-bacnet (same as the repository); install it new and remove the old cerberus-bacnet adapter",
+        "de": "Adapter umbenannt in fc20-cerberus-bacnet (wie das Repository); neu installieren und den alten Adapter cerberus-bacnet entfernen"
+      },
       "0.1.4": {
         "en": "Title now starts with FC20",
         "de": "Titel beginnt jetzt mit FC20"
@@ -38,8 +42,8 @@
     "license": "MIT",
     "platform": "Javascript/Node.js",
     "mode": "daemon",
-    "icon": "cerberus-bacnet.png",
-    "extIcon": "https://raw.githubusercontent.com/andreaslampl/ioBroker.fc20-cerberus-bacnet/main/admin/cerberus-bacnet.png",
+    "icon": "fc20-cerberus-bacnet.png",
+    "extIcon": "https://raw.githubusercontent.com/andreaslampl/ioBroker.fc20-cerberus-bacnet/main/admin/fc20-cerberus-bacnet.png",
     "readme": "https://github.com/andreaslampl/ioBroker.fc20-cerberus-bacnet/blob/main/README.md",
     "enabled": true,
     "type": "alarm",

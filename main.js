@@ -9,7 +9,7 @@ const OT = Bacnet.ObjectType;
 
 class CerberusBacnet extends utils.Adapter {
     constructor(options) {
-        super({ ...options, name: 'cerberus-bacnet' });
+        super({ ...options, name: 'fc20-cerberus-bacnet' });
         this.link = null;
         this.panel = null;
         this.known = new Set();

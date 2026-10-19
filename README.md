@@ -1,6 +1,5 @@
 # ioBroker.fc20-cerberus-bacnet
 
-Adapter `cerberus-bacnet` (Instanz `cerberus-bacnet.0`).
 
 Siemens **Cerberus PRO** Brandmeldezentralen (FC20xx, FC72x) über **BACnet/IP** in ioBroker:
 Melder, Zonen, Ein- und Ausgänge mit Zustand, Alarm, Störung und Abschaltung, dazu

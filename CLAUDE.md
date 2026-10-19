@@ -47,8 +47,10 @@ ioBroker adapter for Siemens Cerberus PRO fire panels over BACnet/IP. Owner's pa
   like loops/stubs/panel, msv 3, bv 1, structured view 166, notification class 25, types 48/318).
   Open: duplicate names ("Stich 21" on two line cards), info-log noise after connect, BBMD renewal log.
 - 0.1.4: admin title starts with "FC20". The owner then renamed the GitHub repo to
-  ioBroker.fc20-cerberus-bacnet; the adapter ID stays `cerberus-bacnet` (package name
-  iobroker.cerberus-bacnet) so existing instances, states and settings keep working.
+  ioBroker.fc20-cerberus-bacnet. `iobroker url` derives the adapter name from the repo name, so
+  installing failed ("Cannot install ...: 0", exit 25) while the package was still
+  iobroker.cerberus-bacnet -> 0.2.0 renames the adapter ID to `fc20-cerberus-bacnet` (new instance;
+  the old cerberus-bacnet adapter has to be removed by the owner). Repo name and adapter ID must match.
 
 ## Conventions
 
