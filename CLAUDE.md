@@ -36,6 +36,11 @@ ioBroker adapter for Siemens Cerberus PRO fire panels over BACnet/IP. Owner's pa
   license (site export shows installedLicense NOT_PRESENT on the panel element), access rights.
 - 0.1.1 still denied (Code:29). 0.1.2 adds diagnosis (panel's I-Am; whether the panel ever contacts us)
   and optional foreign device registration at the panel as BBMD (needs 'BBMD freigeben' in the panel).
+- 0.1.2 field result: panel answers Who-Is (device 1, vendor 7); FD registration accepted (BBMD + FDT
+  enabled), but after 40+ min the panel never contacted client 10 and still denies (Code:29). Most
+  likely cause: no BACnet license on the panel. The owner asked to trick the license check - declined;
+  offered alternatives: obtain the license, or wire the panel's fire/fault outputs to SPC zones
+  (ioBroker.spc-edp).
 
 ## Conventions
 
