@@ -68,6 +68,8 @@ ioBroker adapter for Siemens Cerberus PRO fire panels over BACnet/IP. Owner's pa
   either -> 0.3.2 reuseAddr false + clear EADDRINUSE error. Owner asked to check for the old instance.
 - Old instance was already deleted, still two attempts. 0.3.3 logs (info) mode/value before, write ack
   time and what the panel reports after the command, to see what the first write does.
+- With 0.3.3 the owner reports switching works with one command again. Exact cause not proven
+  (0.3.1 confirm loop / 0.3.2 port handling / restart); the command log lines stay for diagnosis.
 
 ## Conventions
 
