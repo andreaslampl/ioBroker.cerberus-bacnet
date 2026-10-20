@@ -1,8 +1,12 @@
 {
   "common": {
     "name": "fc20-cerberus-bacnet",
-    "version": "0.3.1",
+    "version": "0.3.2",
     "news": {
+      "0.3.2": {
+        "en": "The BACnet port is no longer shared: a second instance or BACnet program on the same server is reported as an error instead of silently taking part of the panel's answers",
+        "de": "Der BACnet-Port wird nicht mehr geteilt: eine zweite Instanz oder BACnet-Software auf demselben Server wird als Fehler gemeldet, statt unbemerkt einen Teil der Antworten der Zentrale abzufangen"
+      },
       "0.3.1": {
         "en": "Switching detectors on/off works with one command: the adapter waits until the panel shows the new mode instead of showing the old value again",
         "de": "Melder ab-/einschalten klappt mit einem Befehl: der Adapter wartet, bis die Zentrale die neue Betriebsart meldet, statt den alten Wert wieder anzuzeigen"

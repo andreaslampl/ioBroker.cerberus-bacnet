@@ -166,3 +166,17 @@ test('diagnosis when denied: Who-Is answer of the panel is logged', async t => {
     assert.match(infos.join('\n'), /panel answers Who-Is as device 1/);
     assert.match(infos.join('\n'), /has not contacted us/);
 });
+
+test('a second client on the same port is refused instead of sharing the answers', async t => {
+    const port = nextPort;
+    nextPort += 2;
+    const a = new BacnetLink({ deviceId: 10, port, bind: '127.0.0.1', log: quiet });
+    const b = new BacnetLink({ deviceId: 10, port, bind: '127.0.0.1', log: quiet });
+    const errors = [];
+    b.on('error', e => errors.push(e.code));
+    t.after(() => {
+        a.close();
+        b.close();
+    });
+    await until(() => errors.includes('EADDRINUSE'));
+});

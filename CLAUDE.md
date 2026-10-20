@@ -63,6 +63,9 @@ ioBroker adapter for Siemens Cerberus PRO fire panels over BACnet/IP. Owner's pa
 - 0.3.0 field: owner had to send mode on/off twice. The panel acks WriteProperty at once but applies
   the mode a moment later; the immediate refresh read the old mode and wrote it back (ack) -> 0.3.1
   `_confirm()` re-reads up to 8 s until the new mode shows (fake: `slowMode`).
+- 0.3.1: still two attempts needed on the real panel. Suspected: old cerberus-bacnet.0 still running;
+  the socket had reuseAddr: true, so both instances silently shared port 47808 and answers went to
+  either -> 0.3.2 reuseAddr false + clear EADDRINUSE error. Owner asked to check for the old instance.
 
 ## Conventions
 

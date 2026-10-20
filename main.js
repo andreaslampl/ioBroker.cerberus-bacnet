@@ -42,7 +42,17 @@ class CerberusBacnet extends utils.Adapter {
             timeout: (Number(this.config.timeout) || 6) * 1000,
             log: this.log,
         });
-        this.link.on('error', err => this.log.warn(`BACnet: ${err.message}`));
+        this.link.on('error', err => {
+            if (err.code === 'EADDRINUSE') {
+                // a second BACnet client on the same port would get part of the panel's answers
+                this.log.error(
+                    `UDP port ${this.link.port} is already in use - is another instance (e.g. the old cerberus-bacnet.0) ` +
+                        'or other BACnet software running on this server? Stop it or choose another local port.',
+                );
+            } else {
+                this.log.warn(`BACnet: ${err.message}`);
+            }
+        });
         this.panel = new Panel({
             link: this.link,
             address: host,
