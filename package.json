@@ -1,6 +1,6 @@
 {
   "name": "iobroker.fc20-cerberus-bacnet",
-  "version": "0.3.2",
+  "version": "0.3.3",
   "description": "Siemens Cerberus PRO fire panels (FC20/FC720) over BACnet/IP for ioBroker",
   "author": "andreaslampl",
   "license": "MIT",

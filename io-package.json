@@ -1,8 +1,12 @@
 {
   "common": {
     "name": "fc20-cerberus-bacnet",
-    "version": "0.3.2",
+    "version": "0.3.3",
     "news": {
+      "0.3.3": {
+        "en": "Log shows what the panel reports after switching a detector (diagnosis)",
+        "de": "Das Log zeigt, was die Zentrale nach dem Ab-/Einschalten meldet (Diagnose)"
+      },
       "0.3.2": {
         "en": "The BACnet port is no longer shared: a second instance or BACnet program on the same server is reported as an error instead of silently taking part of the panel's answers",
         "de": "Der BACnet-Port wird nicht mehr geteilt: eine zweite Instanz oder BACnet-Software auf demselben Server wird als Fehler gemeldet, statt unbemerkt einen Teil der Antworten der Zentrale abzufangen"
