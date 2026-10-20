@@ -51,6 +51,8 @@ ioBroker adapter for Siemens Cerberus PRO fire panels over BACnet/IP. Owner's pa
   installing failed ("Cannot install ...: 0", exit 25) while the package was still
   iobroker.cerberus-bacnet -> 0.2.0 renames the adapter ID to `fc20-cerberus-bacnet` (new instance;
   the old cerberus-bacnet adapter has to be removed by the owner). Repo name and adapter ID must match.
+- 0.2.0 confirmed by the owner on the real FC2040: reading works and disabling/enabling detectors
+  (MODE write with allowControl) works as intended.
 
 ## Conventions
 
