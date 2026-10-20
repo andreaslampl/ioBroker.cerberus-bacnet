@@ -1,8 +1,12 @@
 {
   "common": {
     "name": "fc20-cerberus-bacnet",
-    "version": "0.3.0",
+    "version": "0.3.1",
     "news": {
+      "0.3.1": {
+        "en": "Switching detectors on/off works with one command: the adapter waits until the panel shows the new mode instead of showing the old value again",
+        "de": "Melder ab-/einschalten klappt mit einem Befehl: der Adapter wartet, bis die Zentrale die neue Betriebsart meldet, statt den alten Wert wieder anzuzeigen"
+      },
       "0.3.0": {
         "en": "Objects sorted into folders (detectors, sounders, inputs/outputs, areas, controls, operating panels, hardware, system) with readable, unique names; internal objects hidden (option); log only for alarm, fault and disablement changes",
         "de": "Objekte in Ordnern (Melder, Sounder, Ein-/Ausgänge, Bereiche, Steuerungen, Bedienung, Hardware, System) mit lesbaren, eindeutigen Namen; interne Objekte ausgeblendet (Option); Log nur noch bei Alarm, Störung und Abschaltung"

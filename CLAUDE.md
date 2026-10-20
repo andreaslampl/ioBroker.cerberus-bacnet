@@ -60,6 +60,9 @@ ioBroker adapter for Siemens Cerberus PRO fire panels over BACnet/IP. Owner's pa
 - 0.3.0 (owner chose the folder layout, paths changed from objects.point_<n>): folders by kind,
   internal objects hidden, info log only when alarm/pre-alarm/fault/disabled flags change,
   BBMD renewal logged once.
+- 0.3.0 field: owner had to send mode on/off twice. The panel acks WriteProperty at once but applies
+  the mode a moment later; the immediate refresh read the old mode and wrote it back (ack) -> 0.3.1
+  `_confirm()` re-reads up to 8 s until the new mode shows (fake: `slowMode`).
 
 ## Conventions
 

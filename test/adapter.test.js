@@ -62,9 +62,9 @@ async function until(fn, ms = 5000) {
     }
 }
 
-async function start(t, allowControl) {
+async function start(t, allowControl, fakeOptions = {}) {
     const port = 49000 + Math.floor(Math.random() * 400) * 2;
-    const fake = fakePanel({ port });
+    const fake = fakePanel({ port, ...fakeOptions });
     const adapter = require('../main.js')({
         // pollInterval in s: long on purpose, changes must arrive by COV
         config: { host: `127.0.0.1:${port}`, deviceId: 1, clientId: 10, localPort: port + 1, bind: '127.0.0.1', pollInterval: 300, timeout: 2, allowControl, priority: 8 },
@@ -153,4 +153,12 @@ test('adapter: panel extended -> new objects appear without restart', async t =>
     assert.equal(adapter.objects['objects.melder.melder_keller'].common.name, 'Melder Keller');
     fake.set(OT.LIFE_SAFETY_POINT, 3, { pv: 2 });
     await until(() => s['summary.alarmList'].val === 'Melder Keller');
+});
+
+test('adapter: mode change confirmed in one go although the panel needs a moment', async t => {
+    const { adapter, fake, s, ns } = await start(t, true, { slowMode: 1200 });
+    await adapter.onStateChange(`${ns}.objects.melder.melder_wohnraum.mode`, { val: 0, ack: false });
+    assert.equal(fake.calls.filter(c => c.startsWith('WP 21:1.160')).length, 1);
+    assert.deepEqual(s['objects.melder.melder_wohnraum.mode'], { val: 0, ack: true });
+    assert.equal(s['objects.melder.melder_wohnraum.disabled'].val, true);
 });

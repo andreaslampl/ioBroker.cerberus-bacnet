@@ -4,7 +4,8 @@
  * A simulated Cerberus PRO panel on 127.0.0.1 (BACnet device, using the same library).
  * Options: noRpm (rejects ReadPropertyMultiple), shortList (object list only by index),
  * requireIAm (like the real panel: requests from an address that has not announced itself as the
- * configured client device are denied with service-request-denied).
+ * configured client device are denied with service-request-denied), slowMode (ms until a new mode is
+ * carried out, like the real panel: the write is acknowledged at once, no COV for the mode).
  */
 
 const { Bacnet } = require('../lib/link');
@@ -14,7 +15,7 @@ const P = Bacnet.PropertyIdentifier;
 const OT = Bacnet.ObjectType;
 const T = Bacnet.ApplicationTag;
 
-function fakePanel({ port, deviceId = 1, clientId = 10, noRpm = false, shortList = false, requireIAm = true } = {}) {
+function fakePanel({ port, deviceId = 1, clientId = 10, noRpm = false, shortList = false, requireIAm = true, slowMode = 0 } = {}) {
     const dev = new B({ port, interface: '127.0.0.1', apduTimeout: 2000 });
     const objects = new Map();
     const add = (type, instance, props) => objects.set(`${type}:${instance}`, { objectId: { type, instance }, ...props });
@@ -163,6 +164,11 @@ function fakePanel({ port, deviceId = 1, clientId = 10, noRpm = false, shortList
         const o = objects.get(key);
         calls.push(`WP ${key}.${v.property.id}=${JSON.stringify(v.value[0].value)}@${v.priority}`);
         if (v.property.id === P.MODE && o.accepted && o.accepted.includes(v.value[0].value)) {
+            if (slowMode) {
+                const mode = v.value[0].value;
+                setTimeout(() => (o.mode = mode), slowMode);
+                return dev.simpleAckResponse(c.header.sender, c.service, c.invokeId);
+            }
             o.mode = v.value[0].value;
         } else if (v.property.id === P.PRESENT_VALUE && objectId.type === OT.BINARY_OUTPUT) {
             o.pv = v.value[0].value === null ? 0 : v.value[0].value;
