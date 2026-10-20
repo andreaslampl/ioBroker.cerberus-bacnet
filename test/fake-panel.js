@@ -19,9 +19,14 @@ function fakePanel({ port, deviceId = 1, clientId = 10, noRpm = false, shortList
     const objects = new Map();
     const add = (type, instance, props) => objects.set(`${type}:${instance}`, { objectId: { type, instance }, ...props });
     add(OT.DEVICE, deviceId, { name: 'FC2040', model: 'FC2040', firmware: '80.6.56', dbRev: 1 });
-    add(OT.LIFE_SAFETY_ZONE, 1, { name: 'Z1', description: 'Gebäude', pv: 0, mode: 1, accepted: [1, 0], flags: 0 });
-    add(OT.LIFE_SAFETY_POINT, 1, { name: 'P1', description: 'Melder Wohnraum', pv: 0, mode: 1, accepted: [1, 0], flags: 0 });
-    add(OT.LIFE_SAFETY_POINT, 2, { name: 'P2', description: 'Melder Flur', pv: 0, mode: 1, accepted: [1, 0], flags: 0 });
+    // object names like the real Cerberus PRO (kind + address + element ID), customer texts invented
+    add(OT.LIFE_SAFETY_ZONE, 1, { name: 'LZ_AREA_FIRE_DETECTION_1_1/9', description: 'Gebäude', pv: 0, mode: 1, accepted: [1, 0], flags: 0 });
+    add(OT.LIFE_SAFETY_POINT, 1, { name: 'LP_SENSOR_AUTOMATIC_1/1_1/1881', description: 'Melder Wohnraum', pv: 0, mode: 1, accepted: [1, 0], flags: 0 });
+    add(OT.LIFE_SAFETY_POINT, 2, { name: 'LP_SENSOR_AUTOMATIC_1/2_1/1883', description: 'Melder Flur', pv: 0, mode: 1, accepted: [1, 0], flags: 0 });
+    add(OT.LIFE_SAFETY_POINT, 1880, { name: 'LP_SOUNDER_BASE_1/1/1_1/1880', description: 'Sockel-Sounder', pv: 0, mode: 1, accepted: [1, 0], flags: 0 });
+    add(OT.LIFE_SAFETY_ZONE, 4194289, { name: 'LZ_LINE_1/2/21_1/4194289', description: 'Stich 21', pv: 0, mode: 1, accepted: [1, 0], flags: 0 });
+    add(OT.LIFE_SAFETY_ZONE, 4194295, { name: 'LZ_LINE_1/3/21_1/4194295', description: 'Stich 21', pv: 0, mode: 1, accepted: [1, 0], flags: 0 });
+    add(OT.LIFE_SAFETY_ZONE, 1844, { name: 'LZ_BACNET_LINE_SUMMARY_1/2/1/1_1/1844', description: 'LZ_BACNET_LINE_SUMMARY_1/2/1/1_1/1844', pv: 0, mode: 1, accepted: [1, 0], flags: 0 });
     add(OT.BINARY_OUTPUT, 1, { name: 'BO1', description: 'Sirenen', pv: 0, active: 'Ein', inactive: 'Aus', flags: 0 });
     add(OT.BINARY_INPUT, 1, { name: 'BI1', description: 'Taster Quittieren', pv: 0, active: 'gedrückt', inactive: 'Ruhe', flags: 0 });
     add(OT.NOTIFICATION_CLASS, 1, { name: 'NC1' });

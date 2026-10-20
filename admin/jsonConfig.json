@@ -71,6 +71,14 @@
       "xs": 12,
       "sm": 6
     },
+    "showAll": {
+      "type": "checkbox",
+      "label": "Show all objects (also internal ones)",
+      "help": "Internal objects of the panel: BACnet line summaries, cause/effect groups, firmware tools ...",
+      "default": false,
+      "xs": 12,
+      "sm": 6
+    },
     "ctrlHeader": {
       "type": "header",
       "text": "Commands",

@@ -14,5 +14,7 @@
   "Allow commands": "Befehle erlauben",
   "BACnet priority for outputs": "BACnet-Priorität für Ausgänge",
   "Register as foreign device at the panel (BBMD)": "Als Foreign Device bei der Zentrale anmelden (BBMD)",
-  "Needed when ioBroker and the panel are in different subnets/VLANs; requires 'BBMD freigeben' in the panel": "Nötig, wenn ioBroker und Zentrale in verschiedenen Subnetzen/VLANs sind; dazu in der Zentrale „BBMD freigeben“ einschalten"
+  "Needed when ioBroker and the panel are in different subnets/VLANs; requires 'BBMD freigeben' in the panel": "Nötig, wenn ioBroker und Zentrale in verschiedenen Subnetzen/VLANs sind; dazu in der Zentrale „BBMD freigeben“ einschalten",
+  "Show all objects (also internal ones)": "Alle Objekte anzeigen (auch interne)",
+  "Internal objects of the panel: BACnet line summaries, cause/effect groups, firmware tools ...": "Interne Objekte der Zentrale: BACnet-Liniensammler, Ursachen-/Effektgruppen, Tool-Objekte …"
 }

@@ -42,7 +42,7 @@ test('reads the panel: objects, names, states, COV subscriptions', async t => {
     const { fake, panel } = await setup(t);
     assert.equal(panel.online, true);
     assert.equal(panel.info.model, 'FC2040');
-    assert.deepEqual([...panel.objects.keys()].sort(), ['bi_1', 'bo_1', 'point_1', 'point_2', 'zone_1']);
+    assert.deepEqual([...panel.objects.keys()].sort(), ['bi_1', 'bo_1', 'point_1', 'point_1880', 'point_2', 'zone_1', 'zone_1844', 'zone_4194289', 'zone_4194295']);
     const p1 = panel.objects.get('point_1');
     assert.equal(p1.description, 'Melder Wohnraum');
     assert.equal(p1.lifeSafety, true);
@@ -89,7 +89,7 @@ test('commands: mode, reset, silence, outputs; refused mode', async t => {
 test('panel without ReadPropertyMultiple and with a long object list', async t => {
     const { fake, panel } = await setup(t, { noRpm: true, shortList: true });
     assert.equal(panel.rpm, false);
-    assert.equal(panel.objects.size, 5);
+    assert.equal(panel.objects.size, 9);
     assert.ok(fake.calls.includes('RP 8:1.76')); // object list by index
     assert.equal(panel.objects.get('zone_1').description, 'Gebäude');
     fake.objects.get('21:1').pv = 3;

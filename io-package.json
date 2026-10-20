@@ -1,8 +1,12 @@
 {
   "common": {
     "name": "fc20-cerberus-bacnet",
-    "version": "0.2.0",
+    "version": "0.3.0",
     "news": {
+      "0.3.0": {
+        "en": "Objects sorted into folders (detectors, sounders, inputs/outputs, areas, controls, operating panels, hardware, system) with readable, unique names; internal objects hidden (option); log only for alarm, fault and disablement changes",
+        "de": "Objekte in Ordnern (Melder, Sounder, Ein-/Ausgänge, Bereiche, Steuerungen, Bedienung, Hardware, System) mit lesbaren, eindeutigen Namen; interne Objekte ausgeblendet (Option); Log nur noch bei Alarm, Störung und Abschaltung"
+      },
       "0.2.0": {
         "en": "Adapter renamed to fc20-cerberus-bacnet (same as the repository); install it new and remove the old cerberus-bacnet adapter",
         "de": "Adapter umbenannt in fc20-cerberus-bacnet (wie das Repository); neu installieren und den alten Adapter cerberus-bacnet entfernen"
@@ -75,7 +79,8 @@
     "timeout": 6,
     "allowControl": false,
     "priority": 8,
-    "foreignDevice": false
+    "foreignDevice": false,
+    "showAll": false
   },
   "objects": [],
   "instanceObjects": [

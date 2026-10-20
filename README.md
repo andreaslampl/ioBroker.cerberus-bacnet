@@ -58,10 +58,25 @@ VLAN-Grenzen, deshalb wird die IP der Zentrale fest eingetragen.
 | `summary.lastChange` | letzte Änderung als Text, z. B. `Brand Küche: Alarm` |
 | `summary.lastMessage` | letzte Ereignismeldung der Zentrale (falls gesendet) |
 
-### Pro Objekt `objects.<typ>_<nummer>`
+### Pro Objekt `objects.<ordner>.<name>`
 
-Typen: `point` (Melder/Punkt), `zone` (Zone/Bereich), `bi`/`bo`/`bv` (binär), `msi`/`mso`/`msv`
-(mehrstufig), `ai`/`ao`/`av` (analog). Der Name kommt aus der Zentrale (Kundentext).
+Die Objekte der Zentrale sind nach Art sortiert; der Name kommt aus dem Kundentext, z. B.
+`objects.melder.brand_kueche`.
+
+| Ordner | Inhalt |
+| --- | --- |
+| `melder` | automatische Melder und Handmelder |
+| `sounder` | Sockel-Sounder (mit dem Namen ihres Melders) und Sirenen |
+| `ein_ausgaenge` | Ein- und Ausgänge der Zentrale (I/Os, Sirenenlinien, ÜE) |
+| `bereiche` | Detektions-Objekt, Abschnitte, Gruppen |
+| `steuerungen` | Steuergruppen, Steuerungen, logische Ein-/Ausgänge |
+| `bedienung` | Bedienfeld, Feuerwehrbedienfeld, Bedienfeldakustik |
+| `hardware` | Zentrale, Module, Linien/Stiche, Geräte, Firmware |
+| `system` | Netzwerk, BACnet, Alarmzähler, Sonstiges |
+
+Interne Objekte (BACnet-Liniensammler, Ursachen-/Effektgruppen …) sind ausgeblendet; mit
+**„Alle Objekte anzeigen“** in den Einstellungen erscheinen sie im Ordner `intern`. Gleiche
+Kundentexte (z. B. „Stich 21“ auf zwei Linienkarten) bekommen die Adresse dazu.
 
 | Datenpunkt | Bedeutung |
 | --- | --- |
@@ -71,6 +86,8 @@ Typen: `point` (Melder/Punkt), `zone` (Zone/Bereich), `bi`/`bo`/`bv` (binär), `
 | `alarm`, `preAlarm`, `fault`, `disabled` | Einzelzustände |
 | `mode` | Betriebsart (z. B. Ein/Aus = eingeschaltet/abgeschaltet); mit „Befehle erlauben“ schreibbar |
 | `reset`, `silence` | Knöpfe (nur mit „Befehle erlauben“) |
+
+Im Log stehen nur Änderungen bei Alarm, Voralarm, Störung und Abschaltung.
 
 ### Befehle an die ganze Zentrale `panel`
 

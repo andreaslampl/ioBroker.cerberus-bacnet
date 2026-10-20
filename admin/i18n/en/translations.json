@@ -14,5 +14,7 @@
   "Allow commands": "Allow commands",
   "BACnet priority for outputs": "BACnet priority for outputs",
   "Register as foreign device at the panel (BBMD)": "Register as foreign device at the panel (BBMD)",
-  "Needed when ioBroker and the panel are in different subnets/VLANs; requires 'BBMD freigeben' in the panel": "Needed when ioBroker and the panel are in different subnets/VLANs; requires 'BBMD freigeben' in the panel"
+  "Needed when ioBroker and the panel are in different subnets/VLANs; requires 'BBMD freigeben' in the panel": "Needed when ioBroker and the panel are in different subnets/VLANs; requires 'BBMD freigeben' in the panel",
+  "Show all objects (also internal ones)": "Show all objects (also internal ones)",
+  "Internal objects of the panel: BACnet line summaries, cause/effect groups, firmware tools ...": "Internal objects of the panel: BACnet line summaries, cause/effect groups, firmware tools ..."
 }

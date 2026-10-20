@@ -18,6 +18,10 @@ ioBroker adapter for Siemens Cerberus PRO fire panels over BACnet/IP. Owner's pa
   poll -> full re-read on change; without it the object-list length every 20th poll; poll/refresh
   results are dropped for objects that got a COV meanwhile), commands: MODE write,
   LifeSafetyOperation (device = whole panel), PRESENT_VALUE write with priority (null = relinquish).
+- `lib/naming.js` – `arrange()`: folder + readable name + state ID per object from the Cerberus object
+  name pattern `L[PZ]_<KIND>_<address>_<panel>/<element>` (rules table, first match wins); sounder
+  bases get their detector's name (same address minus last segment); duplicates get the address;
+  loop-device channels -> hardware; `intern` hidden unless `showAll`. States: `objects.<folder>.<slug>`.
 - `lib/texts.js` – German texts for life safety state/mode, which states count as alarm/fault/off.
 - `test/` – `node --test` against `test/fake-panel.js` (library as device on 127.0.0.1).
 
@@ -53,6 +57,9 @@ ioBroker adapter for Siemens Cerberus PRO fire panels over BACnet/IP. Owner's pa
   the old cerberus-bacnet adapter has to be removed by the owner). Repo name and adapter ID must match.
 - 0.2.0 confirmed by the owner on the real FC2040: reading works and disabling/enabling detectors
   (MODE write with allowControl) works as intended.
+- 0.3.0 (owner chose the folder layout, paths changed from objects.point_<n>): folders by kind,
+  internal objects hidden, info log only when alarm/pre-alarm/fault/disabled flags change,
+  BBMD renewal logged once.
 
 ## Conventions
 

@@ -4,6 +4,7 @@ const utils = require('@iobroker/adapter-core');
 const { BacnetLink, Bacnet } = require('./lib/link');
 const { Panel } = require('./lib/panel');
 const T = require('./lib/texts');
+const { arrange, CATEGORIES } = require('./lib/naming');
 
 const OT = Bacnet.ObjectType;
 
@@ -13,6 +14,10 @@ class CerberusBacnet extends utils.Adapter {
         this.link = null;
         this.panel = null;
         this.known = new Set();
+        this.layout = new Map(); // object key -> {category, name, id}
+        this.byPath = new Map(); // "melder.brand_kueche" -> object key
+        this.lastFlags = new Map();
+        this.quietUntil = 0;
         this.last = new Map();
         this.on('ready', this.onReady.bind(this));
         this.on('unload', this.onUnload.bind(this));
@@ -109,31 +114,64 @@ class CerberusBacnet extends utils.Adapter {
         };
     }
 
+    _path(o) {
+        return `objects.${this.layout.get(o.key).id}`;
+    }
+
+    _label(o) {
+        const l = this.layout.get(o.key);
+        return l ? l.name : o.description || o.name;
+    }
+
     async onObjects(list) {
+        this.layout = arrange(list);
+        const visible = list.filter(o => this.config.showAll || this.layout.get(o.key).category !== 'intern');
+        this.known = new Set(visible.map(o => o.key));
+        this.byPath = new Map(visible.map(o => [this.layout.get(o.key).id, o.key]));
         await this.extendObject('objects', { type: 'folder', common: { name: { en: 'Panel objects', de: 'Objekte der Zentrale' } }, native: {} });
-        this.known = new Set(list.map(o => o.key));
-        for (const o of list) {
+        const folders = new Set(visible.map(o => this.layout.get(o.key).category));
+        for (const f of folders) {
+            await this.extendObject(`objects.${f}`, { type: 'folder', common: { name: CATEGORIES[f] || f }, native: {} });
+        }
+        for (const o of visible) {
             await this.createObjectStates(o);
         }
-        // objects that no longer exist in the panel
-        const channels = await this.getChannelsOfAsync('objects').catch(() => []);
-        for (const ch of channels || []) {
-            const id = ch._id.split('.').pop();
-            if (!this.known.has(id)) {
-                await this.delObjectAsync(`objects.${id}`, { recursive: true });
-            }
-        }
-        for (const o of list) {
+        await this.removeStale(folders);
+        // the first values after (re)connecting are no news: no log lines for them
+        this.quietUntil = Date.now() + 30000;
+        for (const o of visible) {
+            this.lastFlags.set(o.key, JSON.stringify(this._flags(o)));
             await this.writeObject(o);
         }
         await this.writeSummary();
     }
 
+    /** Delete objects of the old flat layout and of objects that are gone or now hidden. */
+    async removeStale(folders) {
+        const all = await this.getForeignObjectsAsync(`${this.namespace}.objects.*`).catch(() => ({}));
+        const keep = id => {
+            const parts = id.split('.');
+            if (parts.length === 1) {
+                return folders.has(parts[0]);
+            }
+            return this.byPath.has(`${parts[0]}.${parts[1]}`);
+        };
+        for (const fullId of Object.keys(all || {})) {
+            const id = fullId.slice(`${this.namespace}.objects.`.length);
+            if (!keep(id)) {
+                await this.delObjectAsync(`objects.${id}`).catch(() => {});
+            }
+        }
+    }
+
     async createObjectStates(o) {
-        const p = `objects.${o.key}`;
-        const title = o.description || o.name;
+        const p = this._path(o);
         const typeName = (T.TYPE_NAMES[o.type] || { de: `Typ ${o.type}` }).de;
-        await this.extendObject(p, { type: 'channel', common: { name: title, desc: `${typeName} ${o.objectId.instance}: ${o.name}` }, native: { objectId: o.objectId } });
+        await this.extendObject(p, {
+            type: 'channel',
+            common: { name: this._label(o), desc: `${typeName} ${o.objectId.instance}: ${o.name}` },
+            native: { objectId: o.objectId, objectName: o.name },
+        });
         const ro = (name, type, role, extra = {}) => ({ name, type, role, read: true, write: false, ...extra });
         const states = {
             name: ro({ en: 'Name', de: 'Name' }, 'string', 'text'),
@@ -168,9 +206,9 @@ class CerberusBacnet extends utils.Adapter {
     }
 
     async writeObject(o) {
-        const p = `objects.${o.key}`;
+        const p = this._path(o);
         const f = this._flags(o);
-        await this._set(`${p}.name`, o.description || o.name);
+        await this._set(`${p}.name`, this._label(o));
         await this._set(`${p}.state`, [this._stateText(o), f.disabled ? 'abgeschaltet' : ''].filter(Boolean).join(', '));
         const v = o.presentValue;
         await this._set(`${p}.value`, [OT.BINARY_INPUT, OT.BINARY_OUTPUT, OT.BINARY_VALUE].includes(o.type) ? Boolean(v) : v === undefined ? null : Number(v));
@@ -184,8 +222,9 @@ class CerberusBacnet extends utils.Adapter {
     }
 
     async writeSummary() {
-        const list = [...this.panel.objects.values()];
-        const names = pred => list.filter(o => pred(this._flags(o))).map(o => o.description || o.name);
+        // internal objects (BACnet line summaries, cause/effect groups ...) would only repeat others
+        const list = [...this.panel.objects.values()].filter(o => this.layout.has(o.key) && this.layout.get(o.key).category !== 'intern');
+        const names = pred => list.filter(o => pred(this._flags(o))).map(o => this._label(o));
         const alarms = names(f => f.alarm);
         const faults = names(f => f.fault);
         const disabled = names(f => f.disabled);
@@ -204,9 +243,19 @@ class CerberusBacnet extends utils.Adapter {
         }
         await this.writeObject(o);
         await this.writeSummary();
-        const text = `${o.description || o.name}: ${this._stateText(o)}${o.disabled ? ' (abgeschaltet)' : ''}`;
-        await this.setState('summary.lastChange', text, true);
-        this.log.info(text);
+        const flags = JSON.stringify(this._flags(o));
+        const important = flags !== this.lastFlags.get(o.key);
+        this.lastFlags.set(o.key, flags);
+        const text = `${this._label(o)}: ${this._stateText(o)}${o.disabled ? ' (abgeschaltet)' : ''}`;
+        // alarm/fault/disablement always; other changes only once the values after connecting are in
+        if (important || Date.now() > this.quietUntil) {
+            await this.setState('summary.lastChange', text, true);
+        }
+        if (important) {
+            this.log.info(text);
+        } else {
+            this.log.debug(text);
+        }
     }
 
     async onNotification(n) {
@@ -222,7 +271,7 @@ class CerberusBacnet extends utils.Adapter {
             return;
         }
         const local = id.slice(this.namespace.length + 1);
-        const m = /^objects\.([^.]+)\.(mode|reset|silence|value)$/.exec(local);
+        const m = /^objects\.(.+)\.(mode|reset|silence|value)$/.exec(local);
         const panelCmd = /^panel\.(reset|silence|unsilence)$/.exec(local);
         if (!m && !panelCmd) {
             return;
@@ -240,9 +289,10 @@ class CerberusBacnet extends utils.Adapter {
                 await this.setState(local, false, true);
                 return;
             }
-            const [, objKey, cmd] = m;
+            const [, path, cmd] = m;
+            const objKey = this.byPath.get(path) || path;
             const o = this.panel.objects.get(objKey);
-            const label = o ? o.description || o.name : objKey;
+            const label = o ? this._label(o) : path;
             if (cmd === 'mode') {
                 this.log.info(`${label}: mode -> ${T.LIFE_SAFETY_MODE[state.val] || state.val}`);
                 await this.panel.setMode(objKey, state.val);
@@ -258,7 +308,7 @@ class CerberusBacnet extends utils.Adapter {
         }
         // confirm with the real value from the panel
         if (m) {
-            const o = this.panel.objects.get(m[1]);
+            const o = this.panel.objects.get(this.byPath.get(m[1]));
             if (m[2] === 'reset' || m[2] === 'silence') {
                 await this.setState(local, false, true);
             } else if (o) {
